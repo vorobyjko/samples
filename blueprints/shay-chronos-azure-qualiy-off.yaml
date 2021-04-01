@@ -1,0 +1,26 @@
+kind: blueprint
+clouds:
+- azure: westeurope
+applications:
+- chronos-server:
+    target: chronos
+    input_values:
+    - AZURE_VM_SIZE: $INSTANCETYPE
+- chronos-client:
+    target: chronos
+    input_values:
+    - AZURE_VM_SIZE: $INSTANCETYPE
+    - CHRONOS_SERVER_DNS: $colony.applications.chronos-server.dns
+    depends_on: 
+    - chronos-server
+spec_version: 1
+environmentType: sandbox
+artifacts:
+- chronos-server: ''
+- chronos-client: ''
+inputs:
+- INSTANCETYPE:
+    default_value: Basic_A1
+    optional: true
+debugging:
+  bastion_availability: enabled-off
